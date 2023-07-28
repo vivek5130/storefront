@@ -1,0 +1,66 @@
+{%extends 'base.html'%}
+{%block title%}
+Contact
+{%endblock title%}
+{%block style%}
+  #chead{
+    width:190px;
+    height:40px;
+    margin:auto;
+    color: red;
+  }
+  #frm{
+    background-color: pink;
+    padding: 0% 20%;
+  }
+  .cont{
+    
+    background-color: lightblue;
+    
+
+  }
+  .form-control{
+    widht:20%;
+   
+  }
+  #cont2{
+    padding: 0% 20%;
+    margin: 0% 5%;
+  }
+{%endblock style%}
+{%block body%}
+<div>
+    <img src="https://source.unsplash.com/1600x500/?phone,contact" alt="not found" />
+</div>
+<div class="cont">
+    <h2 id="chead">
+        Contact us
+    </h2>
+
+    <div id="cont2">
+        <form id = "frm" method="post" action= "/contact/">
+        {% csrf_token %}
+        {{ form }}
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Name</label>
+                <input type="text" class="form-control" id="exampleInputEmail1" id="name" name = "name" aria-describedby="emailHelp"   placeholder="Enter name" required>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Contact Number</label>
+                <input type="tel" pattern="[0-9]{10}" class="form-control" id="number" name = "number"  aria-describedby="emailHelp" placeholder="Enter number" required>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" name = "email" aria-describedby="emailHelp" placeholder="Enter Email" required>
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name = "password" placeholder="Enter Password" required>
+            </div>
+           
+            <button style="margin-left:40%" type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+{%endblock body%}

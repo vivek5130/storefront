@@ -1,0 +1,145 @@
+{%extends 'base.html'%}
+{%block title%}
+Purchases
+{%endblock title%}
+{%block style%}
+table, th, td {
+    border: 1px solid;
+  }
+  .pics{
+    width:200px;
+    height:180px;
+    
+  }
+  .photocont{
+    display: inline-block;
+    
+  }
+  #contain{
+   margin: 3% 3%;
+  }
+  .prodnm{
+    text-align:center
+  }
+  .hold{
+    display: inline-block;
+  }
+  #netp{
+    margin: 5% 3%;
+
+  }
+  #buy{
+    margin-left :48%;
+    margin-bottom: 3%;
+    width:80px;
+  }
+{%endblock style%}
+{%block body%}
+
+{% comment %} <table>
+    <tr>
+        {% for column in list_colmns %}
+    
+        <th>{{ column }}</th>
+        
+        {% endfor %}
+    </tr>
+    {% for row in list_rows %}
+    <tr>
+        {% for cell in row %}
+            {%if  forloop.last%}
+            <td><img src = "/media/{{cell}}" widht = "100px" height = "100px"/></td>
+            
+            {%else%}
+                <td>{{ cell }}</td>
+            {%endif%}
+            
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </table>
+    <h2>Total price = {{total_price}}
+    </h2> {% endcomment %}
+   <div id = "contain">
+   </div>
+   <div id = 'netp'></div>
+   <div ><button id="buy">Buy Now</button></div>
+
+     {%for i in cart%}
+    console.log("ihi")
+    {%endfor%} 
+    
+
+{%endblock body%}
+{%block script%}
+var netp = document.getElementById('netp')
+var crt = localStorage.getItem('cart')
+var buy = document.getElementById('buy')
+
+
+console.log(crt)
+var prod = JSON.parse('{{product|escapejs}}');
+
+var pr = document.getElementById('pr')
+var crtobj = JSON.parse(crt);
+var contain = document.getElementById('contain')
+var net_price = 0
+for (let i in crtobj){
+   var hold = document.createElement("div");
+   var hold2 = document.createElement("div");
+   hold.setAttribute('class', 'hold');
+   hold2.setAttribute('class', 'hold2');
+   contain.appendChild(hold2)
+   contain.appendChild(hold)
+
+    var tag2 = document.createElement("div");
+    tag2.setAttribute('id','name' + i.toString());
+    tag2.setAttribute('class', 'photocont');
+  
+    
+    var nident = 'name' + i
+    
+    var image = document.createElement('img')
+   
+    image.setAttribute('id', 'img' + i.toString());
+    image.setAttribute('class','pics')
+    var ig = document.getElementById('"img+i')
+    var prodnm = document.createElement('p')
+    prodnm.setAttribute('id', 'prodnm' + i)
+    prodnm.setAttribute('class', 'prodnm')
+   
+    hold.appendChild(image)
+    hold.appendChild(prodnm)
+    contain.appendChild(tag2)
+
+
+    ele = document.getElementById(nident)
+    var filtereddata = prod.filter(function(item){
+        return item.fields.product_id == i
+    })
+   
+    filtereddata.forEach(function(item){
+      
+        var fields = item.fields;
+        console.log(item.fields.product_id)
+        console.log(item.fields.product_name)
+        var discprice = item.fields.price - ((item.fields.price*item.fields.product_discount)/100)
+        var totalcost = discprice * crtobj[i]
+        net_price += totalcost
+        ele.innerHTML =  "Quantity of "+ item.fields.product_name+" puchased is "+ crtobj[i] + " each of cost = "+ item.fields.price + "discount is: " + item.fields.product_discount +"<br> after discont price is:" + discprice + "<br>Total cost is: " + totalcost
+        image.src = "/media/" + item.fields.image
+        document.getElementById('prodnm' + i).innerHTML = item.fields.product_name
+
+    })
+    netp.innerHTML = "Net price is : " + net_price
+    
+    
+    
+    
+}
+buy.addEventListener('click', function(){
+  alert('Your order has been placed successfuly')
+})
+
+
+{%endblock script%}
